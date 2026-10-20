@@ -306,7 +306,7 @@
                         <h3>📥 Import CSV</h3>
                         <p>Import transaksi dari CSV (format: Tanggal, Jenis, Kategori, Jumlah, Deskripsi).</p>
                         <input type="file" id="csv-import" accept=".csv" class="form-input" style="display:none">
-                        <button class="btn btn-primary" onclick="document.getElementById('csv-import').click()">Pilih File CSV</button>
+                        <button id="csv-import-button" class="btn btn-primary" onclick="document.getElementById('csv-import').click()">Pilih File CSV</button>
                         <div id="import-result" class="muted" style="margin-top:8px;display:none"></div>
                     </div>
                     <div class="card">

@@ -630,9 +630,18 @@ function showImportResult(msg, isError) {
 }
 
 function setupImportButton() {
-    document.getElementById('csv-import').addEventListener('change', async (e) => {
+    const input = document.getElementById('csv-import');
+    if (!input) {
+        console.error('csv-import element not found');
+        return;
+    }
+    input.addEventListener('change', async (e) => {
         if (!e.target.files[0]) return;
-        const btn = document.querySelector('.tools .card h3:nth-of-type(2) + p + button');
+        const btn = document.getElementById('csv-import-button');
+        if (!btn) {
+            console.error('csv-import-button not found');
+            return;
+        }
         btn.disabled = true;
         btn.textContent = 'Memuat...';
         try {
@@ -641,15 +650,13 @@ function setupImportButton() {
             const res = await fetch(`${API}/api/import`, { method: 'POST', body: fd });
             const data = await res.json();
             const errs = data.errors || [];
-            let msg;
             if (data.imported > 0) {
-                msg = `Import ${data.imported} transaksi!`;
                 showImportResult(`✅ Import ${data.imported} transaksi | ${errs.length} error${errs.length ? ': ' + errs[0] : ''}`);
             } else {
-                msg = `Gagal: ${errs[0] || 'File format salah'}`;
-                showImportResult(`❌ ${msg}`);
+                showImportResult(`❌ Gagal: ${errs[0] || 'File format salah'}`);
             }
         } catch (e2) {
+            console.error('Import error:', e2);
             showImportResult(`❌ Import gagal: ${e2.message}`);
         }
         btn.disabled = false;
