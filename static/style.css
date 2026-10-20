@@ -1,4 +1,11 @@
 /* Zephyr Saving Money - Neo-Brutalism */
+@font-face {
+    font-family: 'Zephyr';
+    src: url('/static/fonts/Zephyr/TWILIGHT.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&family=Space+Mono:wght@400;700&display=swap');
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -36,7 +43,7 @@
 html, body { height: 100%; }
 
 body {
-    font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+    font-family: 'Zephyr', Georgia, serif;
     background: var(--bg);
     color: var(--text-primary);
     line-height: 1.6;
@@ -124,6 +131,7 @@ body::after {
     color: var(--text-primary);
     letter-spacing: -0.02em;
     text-transform: uppercase;
+    font-family: 'Zephyr', Georgia, serif;
 }
 
 .subtitle {
@@ -132,6 +140,7 @@ body::after {
     text-transform: uppercase;
     letter-spacing: 0.15em;
     font-weight: 700;
+    font-family: 'Zephyr', Georgia, serif;
 }
 
 .header-stats { display: flex; gap: 1rem; }
@@ -267,7 +276,7 @@ body::after {
 
 .card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; padding-top: 1rem; border-top: var(--border-thick) solid var(--border-primary); }
 
-.card h3 { font-size: 1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: -0.01em; }
+.card h3 { font-size: 1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: -0.01em; font-family: 'Zephyr', Georgia, serif; }
 
 /* Dashboard Cards */
 .weekly-card, .monthly-card, .safe-card { padding: 1.5rem; }
@@ -432,7 +441,7 @@ td .type-badge {
     box-shadow: var(--shadow-offset-lg);
 }
 
-.goal-card h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--text-primary); text-transform: uppercase; letter-spacing: -0.01em; }
+.goal-card h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.75rem; color: var(--text-primary); text-transform: uppercase; letter-spacing: -0.01em; font-family: 'Zephyr', Georgia, serif; }
 
 .goal-progress { height: 8px; background: var(--bg-tertiary); overflow: hidden; margin-bottom: 0.75rem; }
 
@@ -470,7 +479,7 @@ td .type-badge {
     border-radius: 0;
     color: var(--text-primary);
     font-size: 0.95rem;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'DM Sans', system-ui, sans-serif;
     transition: all 0.1s;
 }
 
@@ -527,7 +536,7 @@ td .type-badge {
     transform: translate(-50%, -50%) scale(1);
 }
 
-.modal h3 { margin-bottom: 1.25rem; color: var(--accent-lime); font-size: 1.125rem; font-weight: 900; text-transform: uppercase; letter-spacing: -0.01em; }
+.modal h3 { margin-bottom: 1.25rem; color: var(--accent-lime); font-size: 1.125rem; font-weight: 900; text-transform: uppercase; letter-spacing: -0.01em; font-family: 'Zephyr', Georgia, serif; }
 
 /* Charts */
 canvas { max-height: 300px; }
@@ -574,7 +583,7 @@ canvas { max-height: 300px; }
     border-radius: 0;
     color: var(--text-primary);
     font-size: 0.875rem;
-    font-family: 'DM Sans', sans-serif;
+    font-family: 'DM Sans', system-ui, sans-serif;
     transition: all 0.1s;
     flex: 1;
     min-width: 140px;
