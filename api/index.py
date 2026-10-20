@@ -386,6 +386,42 @@ class Tracker:
             old.unlink()
         return str(dst)
 
+    def import_csv(self, filepath: str) -> dict:
+        imported = 0
+        errors = []
+        with open(filepath, 'r', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            for row_num, row in enumerate(reader, start=2):
+                try:
+                    tx_type = row.get('Jenis', '').strip().lower()
+                    if tx_type not in ('income', 'expense', 'masuk', 'keluar'):
+                        errors.append(f"Baris {row_num}: Jenis harus 'income/masuk' atau 'expense/keluar'")
+                        continue
+                    tx_type = 'income' if tx_type in ('income', 'masuk') else 'expense'
+                    amount = float(row.get('Jumlah', 0))
+                    if amount <= 0:
+                        errors.append(f"Baris {row_num}: Jumlah harus > 0")
+                        continue
+                    category = row.get('Kategori', '').strip() or 'Lainnya'
+                    description = row.get('Deskripsi', '').strip()
+                    date_str = row.get('Tanggal', '').strip()
+                    date = datetime.now().isoformat()
+                    if date_str:
+                        try:
+                            date = datetime.strptime(date_str, '%d/%m/%Y').isoformat()
+                        except ValueError:
+                            errors.append(f"Baris {row_num}: Format tanggal salah (gunakan DD/MM/YYYY)")
+                            continue
+                    self.add_transaction(tx_type, amount, category, description)
+                    self.data.transactions[-1].date = date
+                    imported += 1
+                except ValueError as e:
+                    errors.append(f"Baris {row_num}: {str(e)}")
+                except Exception as e:
+                    errors.append(f"Baris {row_num}: {str(e)}")
+        self.save()
+        return {'imported': imported, 'errors': errors}
+
 
 tracker = Tracker()
 
@@ -534,6 +570,24 @@ def api_export():
 def api_backup():
     path = tracker.backup()
     return jsonify({'path': path})
+
+@app.route('/api/import', methods=['POST'])
+def api_import():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file uploaded'}), 400
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': 'No file selected'}), 400
+    if not file.filename.endswith('.csv'):
+        return jsonify({'error': 'File must be CSV'}), 400
+    
+    import_dir = Path('/tmp/zephyr_imports') if os.environ.get('VERCEL') else Path.home() / '.savings_imports'
+    import_dir.mkdir(parents=True, exist_ok=True)
+    filepath = import_dir / f'import_{datetime.now().strftime("%Y%m%d_%H%M%S")}.csv'
+    file.save(filepath)
+    
+    result = tracker.import_csv(str(filepath))
+    return jsonify(result)
 
 
 if __name__ == '__main__':

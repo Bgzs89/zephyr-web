@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupModals();
     setupForms();
     setupKeyboardShortcuts();
+    setupImportButton();
     loadAll();
 });
 
@@ -619,4 +620,41 @@ async function backupData() {
     }
     btn.disabled = false;
     btn.textContent = 'Backup Sekarang';
+}
+
+function showImportResult(msg, isError) {
+    const el = document.getElementById('import-result');
+    el.style.display = 'block';
+    el.className = 'muted' + (isError ? '' : ' good');
+    el.textContent = msg;
+}
+
+function setupImportButton() {
+    document.getElementById('csv-import').addEventListener('change', async (e) => {
+        if (!e.target.files[0]) return;
+        const btn = document.querySelector('.tools .card h3:nth-of-type(2) + p + button');
+        btn.disabled = true;
+        btn.textContent = 'Memuat...';
+        try {
+            const fd = new FormData();
+            fd.append('file', e.target.files[0]);
+            const res = await fetch(`${API}/api/import`, { method: 'POST', body: fd });
+            const data = await res.json();
+            const errs = data.errors || [];
+            let msg;
+            if (data.imported > 0) {
+                msg = `Import ${data.imported} transaksi!`;
+                showImportResult(`✅ Import ${data.imported} transaksi | ${errs.length} error${errs.length ? ': ' + errs[0] : ''}`);
+            } else {
+                msg = `Gagal: ${errs[0] || 'File format salah'}`;
+                showImportResult(`❌ ${msg}`);
+            }
+        } catch (e2) {
+            showImportResult(`❌ Import gagal: ${e2.message}`);
+        }
+        btn.disabled = false;
+        btn.textContent = 'Pilih File CSV';
+        e.target.value = '';
+        loadAll();
+    });
 }
