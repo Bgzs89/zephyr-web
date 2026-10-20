@@ -725,6 +725,66 @@ canvas { max-height: 300px; }
     font-size: 2.5rem;
 }
 
+/* Floating light particles */
+.light-particles {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.light-particle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent-lime);
+    opacity: 0;
+    animation: light-float 15s infinite ease-in-out;
+    box-shadow: 0 0 20px var(--accent-lime), 0 0 40px var(--accent-lime);
+}
+
+.light-particle:nth-child(1) { top: 5%; left: 5%; animation-delay: 0s; animation-duration: 18s; }
+.light-particle:nth-child(2) { top: 15%; left: 90%; animation-delay: 2s; animation-duration: 22s; width: 6px; height: 6px; }
+.light-particle:nth-child(3) { top: 40%; left: 10%; animation-delay: 4s; animation-duration: 20s; width: 10px; height: 10px; }
+.light-particle:nth-child(4) { top: 65%; left: 85%; animation-delay: 6s; animation-duration: 25s; width: 7px; height: 7px; }
+.light-particle:nth-child(5) { top: 80%; left: 15%; animation-delay: 8s; animation-duration: 19s; width: 9px; height: 9px; }
+.light-particle:nth-child(6) { top: 25%; left: 50%; animation-delay: 10s; animation-duration: 23s; width: 5px; height: 5px; }
+.light-particle:nth-child(7) { top: 55%; left: 30%; animation-delay: 12s; animation-duration: 21s; width: 8px; height: 8px; }
+.light-particle:nth-child(8) { top: 90%; left: 70%; animation-delay: 14s; animation-duration: 17s; width: 6px; height: 6px; }
+
+@keyframes light-float {
+    0% {
+        transform: translate(0, 0) scale(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.6;
+        transform: translate(var(--tx1, 50px), var(--ty1, -30px)) scale(1);
+    }
+    30% {
+        opacity: 0.4;
+        transform: translate(var(--tx2, 100px), var(--ty2, 20px)) scale(0.8);
+    }
+    50% {
+        opacity: 0.5;
+        transform: translate(var(--tx3, 150px), var(--ty3, -40px)) scale(1);
+    }
+    70% {
+        opacity: 0.3;
+        transform: translate(var(--tx4, 200px), var(--ty4, 10px)) scale(0.6);
+    }
+    90% {
+        opacity: 0.1;
+        transform: translate(var(--tx5, 250px), var(--ty5, -20px)) scale(0.3);
+    }
+    100% {
+        transform: translate(var(--tx6, 300px), var(--ty6, 0)) scale(0);
+        opacity: 0;
+    }
+}
+
 @keyframes wind-float {
     0% {
         transform: translateX(0) translateY(0) rotate(0deg);
