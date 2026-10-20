@@ -667,8 +667,12 @@ function setupImportButton() {
 }
 
 async function resetAllData() {
-    if (!confirm('⚠️ YAKIN hapus SEMUA data?\n\n- Semua transaksi\n- Semua goals\n- Semua recurring\n- Budget\n\nTIDAK BISA DIBATALKAN!')) return;
-    if (!confirm('KONFIRMASI LAGI: Reset total data?')) return;
+    const confirmed = await showConfirm(
+        'RESET SEMUA DATA?',
+        'Semua transaksi, goals, recurring, dan budget akan dihapus.\n\nTindakan ini tidak bisa dibatalkan.',
+        'RESET'
+    );
+    if (!confirmed) return;
     
     const btn = event.target;
     btn.disabled = true;
@@ -683,4 +687,26 @@ async function resetAllData() {
     }
     btn.disabled = false;
     btn.textContent = 'Reset Sekarang';
+}
+
+function showConfirm(title, message, actionText = 'OK') {
+    return new Promise(resolve => {
+        const modal = document.getElementById('modal-confirm');
+        const ok = document.getElementById('confirm-ok');
+        document.getElementById('confirm-title').textContent = title;
+        document.getElementById('confirm-message').textContent = message;
+        ok.textContent = actionText;
+        window.confirmResolve = resolve;
+        modal.classList.add('active');
+        document.getElementById('modal-overlay').classList.add('active');
+    });
+}
+
+function closeConfirm(result) {
+    document.getElementById('modal-confirm').classList.remove('active');
+    document.getElementById('modal-overlay').classList.remove('active');
+    if (window.confirmResolve) {
+        window.confirmResolve(result);
+        window.confirmResolve = null;
+    }
 }

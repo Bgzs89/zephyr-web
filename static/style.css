@@ -588,3 +588,46 @@ canvas { max-height: 300px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--border-secondary); border: 2px solid var(--bg); }
 ::-webkit-scrollbar-thumb:hover { background: var(--accent-lime); }
+
+/* Confirm Modal */
+.confirm-modal {
+    text-align: center;
+    max-width: 380px;
+}
+
+.confirm-icon {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+#confirm-title {
+    margin-bottom: 0.75rem;
+    color: var(--accent-lime);
+}
+
+.confirm-message {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    white-space: pre-line;
+}
+
+.btn-danger {
+    background: var(--danger);
+    color: white;
+    border-color: var(--danger);
+    box-shadow: var(--shadow-offset);
+}
+
+.btn-danger:hover {
+    background: #dc2626;
+    transform: translate(-3px, -3px);
+    box-shadow: var(--shadow-offset-lg);
+}
+
+.btn-danger:active {
+    transform: translate(-1px, -1px);
+    box-shadow: var(--shadow-offset-sm);
+}
