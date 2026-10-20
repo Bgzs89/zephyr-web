@@ -414,12 +414,13 @@ async function loadGoals() {
 }
 
 async function deleteGoal(id) {
-    if (!confirm('Hapus target ini?')) return;
+    const confirmed = await showConfirm('Hapus Target?', 'Target ini akan dihapus permanen.', 'HAPUS');
+    if (!confirmed) return;
     const res = await fetch(`/api/goal/${id}`, { method: 'DELETE' });
     if (res.ok) {
         loadGoals();
     } else {
-        alert('Gagal menghapus target');
+        showAlert('Gagal', 'Gagal menghapus target', '❌');
     }
 }
 
@@ -602,7 +603,7 @@ async function exportCSV() {
         a.click();
         URL.revokeObjectURL(url);
     } catch (e) {
-        alert('Gagal export: ' + e.message);
+        showAlert('Gagal Export', 'Gagal export: ' + e.message, '❌');
     }
     btn.disabled = false;
     btn.textContent = 'Download CSV';
@@ -614,9 +615,9 @@ async function backupData() {
     btn.textContent = 'Membackup...';
     try {
         const data = await fetchJSON('/api/backup');
-        alert('Backup tersimpan: ' + data.path);
+        showAlert('Backup Selesai', 'Backup tersimpan: ' + data.path, '💾');
     } catch (e) {
-        alert('Gagal backup: ' + e.message);
+        showAlert('Gagal Backup', 'Gagal backup: ' + e.message, '❌');
     }
     btn.disabled = false;
     btn.textContent = 'Backup Sekarang';
@@ -680,10 +681,10 @@ async function resetAllData() {
     try {
         const res = await fetch(`${API}/api/reset`, { method: 'POST' });
         const data = await res.json();
-        alert('✅ ' + data.message);
+        showAlert('Reset Selesai', data.message, '✅');
         loadAll();
     } catch (e) {
-        alert('❌ Gagal reset: ' + e.message);
+        showAlert('Gagal Reset', 'Gagal reset: ' + e.message, '❌');
     }
     btn.disabled = false;
     btn.textContent = 'Reset Sekarang';
@@ -708,5 +709,25 @@ function closeConfirm(result) {
     if (window.confirmResolve) {
         window.confirmResolve(result);
         window.confirmResolve = null;
+    }
+}
+
+function showAlert(title, message, icon = '✅') {
+    return new Promise(resolve => {
+        document.getElementById('alert-icon').textContent = icon;
+        document.getElementById('alert-title').textContent = title;
+        document.getElementById('alert-message').textContent = message;
+        window.alertResolve = resolve;
+        document.getElementById('modal-alert').classList.add('active');
+        document.getElementById('modal-overlay').classList.add('active');
+    });
+}
+
+function closeAlert() {
+    document.getElementById('modal-alert').classList.remove('active');
+    document.getElementById('modal-overlay').classList.remove('active');
+    if (window.alertResolve) {
+        window.alertResolve();
+        window.alertResolve = null;
     }
 }

@@ -631,3 +631,99 @@ canvas { max-height: 300px; }
     transform: translate(-1px, -1px);
     box-shadow: var(--shadow-offset-sm);
 }
+
+/* Alert Modal */
+.alert-modal {
+    text-align: center;
+    max-width: 380px;
+}
+
+.alert-icon {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+#alert-title {
+    margin-bottom: 0.75rem;
+    color: var(--accent-lime);
+}
+
+.alert-message {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    white-space: pre-line;
+}
+
+/* Floating wind elements */
+.wind-elements {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.wind-leaf, .wind-cloud {
+    position: absolute;
+    font-size: 2rem;
+    opacity: 0.15;
+    animation: wind-float 20s infinite ease-in-out;
+}
+
+.wind-leaf:nth-child(1) {
+    top: 10%;
+    left: -5%;
+    animation-delay: 0s;
+    animation-duration: 25s;
+}
+
+.wind-leaf:nth-child(2) {
+    top: 60%;
+    left: -5%;
+    animation-delay: 8s;
+    animation-duration: 30s;
+}
+
+.wind-leaf:nth-child(3) {
+    top: 85%;
+    left: -5%;
+    animation-delay: 15s;
+    animation-duration: 28s;
+}
+
+.wind-cloud:nth-child(4) {
+    top: 25%;
+    left: -10%;
+    animation-delay: 5s;
+    animation-duration: 40s;
+    font-size: 3rem;
+}
+
+.wind-cloud:nth-child(5) {
+    top: 70%;
+    left: -10%;
+    animation-delay: 20s;
+    animation-duration: 45s;
+    font-size: 2.5rem;
+}
+
+@keyframes wind-float {
+    0% {
+        transform: translateX(0) translateY(0) rotate(0deg);
+    }
+    25% {
+        transform: translateX(25vw) translateY(-20px) rotate(90deg);
+    }
+    50% {
+        transform: translateX(50vw) translateY(10px) rotate(180deg);
+    }
+    75% {
+        transform: translateX(75vw) translateY(-15px) rotate(270deg);
+    }
+    100% {
+        transform: translateX(110vw) translateY(5px) rotate(360deg);
+    }
+}
