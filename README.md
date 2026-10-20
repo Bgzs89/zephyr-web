@@ -2,6 +2,12 @@
 
 Personal expense tracker with neo-brutalist design. Track income, expenses, recurring transactions, savings goals, budgets, and visualize spending trends.
 
+## Preview
+
+| Dashboard | Tools |
+|-----------|-------|
+| ![Dashboard](screenshots/dashboard.png) | ![Tools](screenshots/tools.png) |
+
 ## Features
 
 - **Dashboard** — Weekly/monthly balance overview, safe-to-spend calculator
