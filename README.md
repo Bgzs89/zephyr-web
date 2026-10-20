@@ -1,26 +1,26 @@
 # Zephyr Saving Money
 
-Personal expense tracking with neo-brutalist design. Income, expenses, recurring transactions, goals, budgets, charts.
+Personal expense tracker with neo-brutalist design. Track income, expenses, recurring transactions, savings goals, budgets, and visualize spending trends.
 
 ## Features
 
-- Dashboard: weekly/monthly balance, safe money tracker
-- Transactions: add/edit/delete income & expenses by category
-- Recurring: automate daily/weekly/monthly transactions
-- Goals: track savings targets with progress bars
-- Budget: set weekly/monthly limits, see spend percentage
-- Charts: visualize income vs expense trends
-- Categories: flexible categorization system
-- Offline: all data stored locally in JSON
+- **Dashboard** — Weekly/monthly balance overview, safe-to-spend calculator
+- **Transactions** — Add, edit, delete income & expenses with categories
+- **Recurring** — Automate daily, weekly, monthly transactions
+- **Goals** — Track savings targets with progress bars
+- **Budgets** — Set weekly/monthly limits, view spend percentage
+- **Charts** — Income vs expense trends over time
+- **Categories** — Flexible categorization system
+- **Local storage** — All data in JSON file (no database required)
 
 ## Tech Stack
 
 - **Backend**: Flask (Python)
 - **Frontend**: Vanilla JS, CSS Grid, HTML5
-- **Data**: Local JSON file (no database required)
+- **Data**: Local JSON file
 - **Charts**: Chart.js
 
-## Setup Local
+## Local Setup
 
 ```bash
 cd zephyr-web
@@ -29,17 +29,7 @@ python api/index.py
 
 Open `http://localhost:5000` in browser.
 
-## Deploy to Railway
-
-1. Push repo to GitHub (done ✓)
-2. Go [railway.app](https://railway.app) → Login with GitHub
-3. Click "New Project" → "Deploy from GitHub repo"
-4. Select `Bgzs89/zephyr-web`
-5. Railway auto-detects Flask, deploys in ~1min
-6. Get public URL (e.g., `zephyr-web.railway.app`)
-7. Share URL → works on phone & laptop
-
-## File Structure
+## Project Structure
 
 ```
 zephyr-web/
@@ -58,21 +48,21 @@ zephyr-web/
 
 ## API Endpoints
 
-- `GET /api/summary` - Balance overview
-- `GET /api/weekly` - Weekly stats
-- `GET /api/monthly` - Monthly stats
-- `POST /api/transaction` - Add transaction
-- `DELETE /api/transaction/<id>` - Delete transaction
-- `POST /api/goal` - Add savings goal
-- `DELETE /api/goal/<id>` - Delete goal
-- `POST /api/recurring` - Add recurring transaction
-- `DELETE /api/recurring/<id>` - Deactivate recurring
-- `POST /api/budget` - Set budget limits
-- `GET /api/charts` - Chart data
+- `GET /api/summary` — Balance overview
+- `GET /api/weekly` — Weekly stats
+- `GET /api/monthly` — Monthly stats
+- `POST /api/transaction` — Add transaction
+- `DELETE /api/transaction/<id>` — Delete transaction
+- `POST /api/goal` — Add savings goal
+- `DELETE /api/goal/<id>` — Delete goal
+- `POST /api/recurring` — Add recurring transaction
+- `DELETE /api/recurring/<id>` — Deactivate recurring
+- `POST /api/budget` — Set budget limits
+- `GET /api/charts` — Chart data
 
-## Design
+## Design System
 
-Neo-brutalism with lime green (#c0ff00) accents. Thick borders, hard shadows, uppercase typography. DM Sans + Space Mono fonts.
+Neo-brutalism with lime green (#c0ff00) accents. Thick borders, hard offset shadows, uppercase typography. Fonts: DM Sans (UI) + Space Mono (numbers).
 
 ## License
 
