@@ -422,6 +422,17 @@ class Tracker:
         self.save()
         return {'imported': imported, 'errors': errors}
 
+    def reset_all(self):
+        self.data.transactions = []
+        self.data.recurring = []
+        self.data.budget = Budget()
+        self.data.goals = []
+        self.data.next_id = 1
+        self.data.next_recurring_id = 1
+        self.data.next_goal_id = 1
+        self.save()
+        return {'message': 'All data reset'}
+
 
 tracker = Tracker()
 
@@ -587,6 +598,11 @@ def api_import():
     file.save(filepath)
     
     result = tracker.import_csv(str(filepath))
+    return jsonify(result)
+
+@app.route('/api/reset', methods=['POST'])
+def api_reset():
+    result = tracker.reset_all()
     return jsonify(result)
 
 

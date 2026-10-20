@@ -665,3 +665,22 @@ function setupImportButton() {
         loadAll();
     });
 }
+
+async function resetAllData() {
+    if (!confirm('⚠️ YAKIN hapus SEMUA data?\n\n- Semua transaksi\n- Semua goals\n- Semua recurring\n- Budget\n\nTIDAK BISA DIBATALKAN!')) return;
+    if (!confirm('KONFIRMASI LAGI: Reset total data?')) return;
+    
+    const btn = event.target;
+    btn.disabled = true;
+    btn.textContent = 'Meriset...';
+    try {
+        const res = await fetch(`${API}/api/reset`, { method: 'POST' });
+        const data = await res.json();
+        alert('✅ ' + data.message);
+        loadAll();
+    } catch (e) {
+        alert('❌ Gagal reset: ' + e.message);
+    }
+    btn.disabled = false;
+    btn.textContent = 'Reset Sekarang';
+}
