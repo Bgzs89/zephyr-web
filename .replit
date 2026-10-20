@@ -1,0 +1,3 @@
+run = "python api/index.py"
+[nix]
+channel = "stable-23_11"

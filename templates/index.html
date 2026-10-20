@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zephyr Saving Money</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌪️</text></svg>">
+</head>
+<body>
+    <canvas id="money-background" aria-hidden="true"></canvas>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <span class="wind-icon">🌪️</span>
+                <div class="title-group">
+                    <h1>ZEPHYR SAVING MONEY</h1>
+                    <span class="subtitle">Wind of Fortune — Guard Your Gold</span>
+                </div>
+            </div>
+            <div class="header-stats">
+                <div class="stat-box">
+                    <span class="stat-label">Total Saldo</span>
+                    <span id="total-balance" class="stat-value good">Rp 0</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="tabs" role="tablist">
+            <button class="tab active" data-tab="dashboard" role="tab">DASHBOARD</button>
+            <button class="tab" data-tab="transactions" role="tab">TRANSAKSI</button>
+            <button class="tab" data-tab="charts" role="tab">GRAFIK</button>
+            <button class="tab" data-tab="goals" role="tab">TARGET</button>
+            <button class="tab" data-tab="budget" role="tab">BUDGET</button>
+            <button class="tab" data-tab="recurring" role="tab">RUTIN</button>
+            <button class="tab" data-tab="tools" role="tab">TOOLS</button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Dashboard Tab -->
+            <section class="tab-panel active" id="panel-dashboard" role="tabpanel">
+                <h2 class="sr-only">Dashboard</h2>
+                <div class="grid-3">
+                    <div class="card weekly-card">
+                        <div class="card-header">
+                            <h3>📅 Sisa Mingguan</h3>
+                            <button class="btn btn-sm btn-secondary" type="button" onclick="toggleDetails(this)" aria-expanded="false" aria-controls="weekly-details">Detail</button>
+                        </div>
+                        <div class="big-number placeholder" id="weekly-net"></div>
+                        <div class="detail-row">
+                            <span>Masuk</span>
+                            <span id="weekly-inc" class="good placeholder"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span>Keluar</span>
+                            <span id="weekly-exp" class="bad placeholder"></span>
+                        </div>
+                        <div class="budget-bar" id="weekly-budget-bar">
+                            <span>Budget: <span id="weekly-budget" class="placeholder"></span> (Terpakai: <span id="weekly-used" class="placeholder">0</span>%)</span>
+                            <div class="bar"><div class="bar-fill" id="weekly-bar-fill"></div></div>
+                        </div>
+                        <div id="weekly-details" class="details-panel" hidden>
+                            <div class="detail-row small">
+                                <span>Hari</span>
+                                <span id="weekly-day" class="placeholder"></span>
+                            </div>
+                            <div class="detail-row small">
+                                <span>Rata-rata harian</span>
+                                <span id="weekly-avg" class="placeholder"></span>
+                            </div>
+                            <div class="detail-row small">
+                                <span>Estimasi akhir</span>
+                                <span id="weekly-est" class="placeholder"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card monthly-card">
+                        <div class="card-header">
+                            <h3>📅 Sisa Bulanan</h3>
+                            <button class="btn btn-sm btn-secondary" type="button" onclick="toggleDetails(this)" aria-expanded="false" aria-controls="monthly-details">Detail</button>
+                        </div>
+                        <div class="big-number" id="monthly-net">Rp 0</div>
+                        <div class="detail-row">
+                            <span>Masuk</span>
+                            <span id="monthly-inc" class="good placeholder"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span>Keluar</span>
+                            <span id="monthly-exp" class="bad placeholder"></span>
+                        </div>
+                        <div class="budget-bar" id="monthly-budget-bar">
+                            <span>Budget: <span id="monthly-budget" class="placeholder"></span> (Terpakai: <span id="monthly-used" class="placeholder">0</span>%)</span>
+                            <div class="bar"><div class="bar-fill" id="monthly-bar-fill"></div></div>
+                        </div>
+                        <div id="monthly-details" class="details-panel" hidden>
+                            <div class="detail-row small">
+                                <span>Hari</span>
+                                <span id="monthly-day" class="placeholder"></span>
+                            </div>
+                            <div class="detail-row small">
+                                <span>Rata-rata harian</span>
+                                <span id="monthly-avg" class="placeholder"></span>
+                            </div>
+                            <div class="detail-row small">
+                                <span>Estimasi akhir</span>
+                                <span id="monthly-est" class="placeholder"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card safe-card">
+                        <div class="card-header">
+                            <h3>🛡️ Uang Aman</h3>
+                            <button class="btn btn-sm btn-secondary" type="button" onclick="toggleDetails(this)" aria-expanded="false" aria-controls="safe-details">Detail</button>
+                        </div>
+                        <div class="big-number safe placeholder" id="safe-money"></div>
+                        <div class="detail-row">
+                            <span>Saldo</span>
+                            <span id="safe-balance" class="placeholder"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span>Tagihan rutin</span>
+                            <span class="bad placeholder" id="safe-bills"></span>
+                        </div>
+                        <div id="safe-details" class="details-panel" hidden>
+                            <div class="detail-row">
+                                <span>Sisa budget mingguan</span>
+                                <span id="safe-wleft" class="placeholder"></span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Sisa budget bulanan</span>
+                                <span id="safe-mleft" class="placeholder"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <button class="btn btn-primary" onclick="openModal('add-transaction')">+ Transaksi Baru</button>
+                    <button class="btn btn-secondary" onclick="openModal('add-goal')">+ Target Tabungan</button>
+                    <button class="btn btn-secondary" onclick="openModal('set-budget')">Set Budget</button>
+                </div>
+            </section>
+
+            <!-- Transactions Tab -->
+            <section class="tab-panel" id="panel-transactions" role="tabpanel">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>📝 Riwayat Transaksi</h3>
+                    </div>
+                    <div class="filters-row">
+                        <select id="filter-type" onchange="loadTransactions()" class="filter-input">
+                            <option value="">Semua Jenis</option>
+                            <option value="income">💰 Masuk</option>
+                            <option value="expense">💸 Keluar</option>
+                        </select>
+                        <input type="text" id="filter-category" class="filter-input" placeholder="Cari kategori..." onchange="loadTransactions()" list="categories">
+                        <input type="date" id="filter-date" class="filter-input" onchange="loadTransactions()">
+                        <button class="btn btn-sm btn-secondary" onclick="clearFilters()" title="Hapus filter">✕</button>
+                    </div>
+                    <div class="table-container">
+                        <table id="transactions-table">
+                            <thead>
+                                <tr>
+                                    <th>Tanggal</th>
+                                    <th>Jenis</th>
+                                    <th>Kategori</th>
+                                    <th>Jumlah</th>
+                                    <th>Deskripsi</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-sm" onclick="loadTransactions()">Refresh</button>
+                        <span id="tx-count">0 transaksi</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Charts Tab -->
+            <section class="tab-panel" id="panel-charts" role="tabpanel">
+                <div class="grid-2">
+                    <div class="card">
+                        <h3>📊 8 Minggu Terakhir</h3>
+                        <canvas id="weekly-chart"></canvas>
+                    </div>
+                    <div class="card">
+                        <h3>📈 6 Bulan Terakhir</h3>
+                        <canvas id="monthly-chart"></canvas>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>🥧 Pengeluaran per Kategori</h3>
+                    <canvas id="category-chart"></canvas>
+                </div>
+            </section>
+
+            <!-- Goals Tab -->
+            <section class="tab-panel" id="panel-goals" role="tabpanel">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>🎯 Target Tabungan</h3>
+                        <button class="btn btn-primary btn-sm" onclick="openModal('add-goal')">+ Target Baru</button>
+                    </div>
+                    <div id="goals-list" class="goals-grid"></div>
+                </div>
+            </section>
+
+            <!-- Budget Tab -->
+            <section class="tab-panel" id="panel-budget" role="tabpanel">
+                <div class="grid-2">
+                    <div class="card">
+                        <h3>📅 Budget Mingguan</h3>
+                        <div class="form-group">
+                            <label>Budget Mingguan</label>
+                            <input type="number" id="budget-weekly" placeholder="0 = tidak set budget" step="1000">
+                        </div>
+                        <div class="budget-preview" id="weekly-budget-preview">
+                            <div class="detail-row">
+                                <span>Budget</span>
+                                <span id="pv-weekly-budget">Rp 0</span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Terpakai</span>
+                                <span id="pv-weekly-used">Rp 0 (0%)</span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Sisa</span>
+                                <span id="pv-weekly-left" class="good">Rp 0</span>
+                            </div>
+                            <div class="bar"><div class="bar-fill" id="pv-weekly-bar"></div></div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>📅 Budget Bulanan</h3>
+                        <div class="form-group">
+                            <label>Budget Bulanan</label>
+                            <input type="number" id="budget-monthly" placeholder="0 = tidak set budget" step="1000">
+                        </div>
+                        <div class="budget-preview" id="monthly-budget-preview">
+                            <div class="detail-row">
+                                <span>Budget</span>
+                                <span id="pv-monthly-budget">Rp 0</span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Terpakai</span>
+                                <span id="pv-monthly-used">Rp 0 (0%)</span>
+                            </div>
+                            <div class="detail-row">
+                                <span>Sisa</span>
+                                <span id="pv-monthly-left" class="good">Rp 0</span>
+                            </div>
+                            <div class="bar"><div class="bar-fill" id="pv-monthly-bar"></div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-primary" onclick="saveBudget()">Simpan Budget</button>
+                </div>
+            </section>
+
+            <!-- Recurring Tab -->
+            <section class="tab-panel" id="panel-recurring" role="tabpanel">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>🔁 Transaksi Rutin</h3>
+                        <button class="btn btn-primary btn-sm" onclick="openModal('add-recurring')">+ Tambah Rutin</button>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Jenis</th>
+                                    <th>Jumlah</th>
+                                    <th>Kategori</th>
+                                    <th>Frekuensi</th>
+                                    <th>Berikutnya</th>
+                                    <th>Status</th>
+                                    <th>Deskripsi</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recurring-table"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tools Tab -->
+            <section class="tab-panel" id="panel-tools" role="tabpanel">
+                <div class="grid-3">
+                    <div class="card">
+                        <h3>📤 Export Data</h3>
+                        <p>Download semua transaksi sebagai CSV untuk Excel/Google Sheets.</p>
+                        <button class="btn btn-primary" onclick="exportCSV()">Download CSV</button>
+                    </div>
+                    <div class="card">
+                        <h3>💾 Backup Data</h3>
+                        <p>Buat backup manual ke cloud storage lokal.</p>
+                        <button class="btn btn-primary" onclick="backupData()">Backup Sekarang</button>
+                    </div>
+                    <div class="card">
+                        <h3>ℹ️ Tentang</h3>
+                        <p>Zephyr Saving Money v1.0</p>
+                        <p class="muted">Dewa angin Zephyrus menjaga tabunganmu.</p>
+                        <p class="muted">Data tersimpan di server (Vercel) atau lokal.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)"></div>
+
+    <div class="modal" id="modal-add-transaction">
+        <div class="modal-content">
+            <h3>💰 Transaksi Baru</h3>
+            <form id="form-transaction">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Jenis</label>
+                        <select name="type" required>
+                            <option value="income">💰 Masuk</option>
+                            <option value="expense">💸 Keluar</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Jumlah</label>
+                        <input type="number" name="amount" required step="1000" min="1" placeholder="50000">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Kategori</label>
+                        <input type="text" name="category" required placeholder="Gaji, Makanan, Bensin..." list="categories">
+                        <datalist id="categories"></datalist>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Deskripsi (opsional)</label>
+                        <input type="text" name="description" placeholder="Detail transaksi">
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="modal-add-goal">
+        <div class="modal-content">
+            <h3>🎯 Target Tabungan Baru</h3>
+            <form id="form-goal">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nama Target</label>
+                        <input type="text" name="name" required placeholder="Laptop, Liburan, Darurat...">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Jumlah Target</label>
+                        <input type="number" name="target" required step="1000" min="1000" placeholder="5000000">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Deadline (opsional)</label>
+                        <input type="date" name="deadline">
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Batal</button>
+                    <button type="submit" class="btn btn-primary">Buat Target</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="modal-add-recurring">
+        <div class="modal-content">
+            <h3>🔁 Transaksi Rutin Baru</h3>
+            <form id="form-recurring">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Jenis</label>
+                        <select name="type" required>
+                            <option value="income">💰 Masuk</option>
+                            <option value="expense">💸 Keluar</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Jumlah</label>
+                        <input type="number" name="amount" required step="1000" min="1000">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Kategori</label>
+                        <input type="text" name="category" required placeholder="Kos, Listrik, Internet..." list="categories">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Deskripsi</label>
+                        <input type="text" name="description" required placeholder="Bayar kos bulanan">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Frekuensi</label>
+                        <select name="frequency" required id="recurring-frequency">
+                            <option value="daily">Harian</option>
+                            <option value="weekly">Mingguan</option>
+                            <option value="monthly">Bulanan</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row" id="recurring-day-field" style="display:none">
+                    <div class="form-group">
+                        <label>Hari/Tanggal</label>
+                        <input type="number" name="day" id="recurring-day" min="1" max="31" placeholder="Tanggal (1-28)">
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Batal</button>
+                    <button type="submit" class="btn btn-primary">Tambah Rutin</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="modal-set-budget">
+        <div class="modal-content">
+            <h3>💰 Atur Budget</h3>
+            <form id="form-budget">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Budget Mingguan</label>
+                        <input type="number" name="weekly" step="1000" placeholder="500000">
+                    </div>
+                    <div class="form-group">
+                        <label>Budget Bulanan</label>
+                        <input type="number" name="monthly" step="1000" placeholder="2000000">
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="modal-edit-transaction">
+        <div class="modal-content">
+            <h3>✏️ Edit Transaksi</h3>
+            <form id="form-edit-transaction">
+                <input type="hidden" name="id">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Jumlah</label>
+                        <input type="number" name="amount" required step="1000" min="1">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Kategori</label>
+                        <input type="text" name="category" required list="categories">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Deskripsi</label>
+                        <input type="text" name="description">
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Batal</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/static/money-bg.js"></script>
+    <script src="/static/app.js"></script>
+</body>
+</html>
