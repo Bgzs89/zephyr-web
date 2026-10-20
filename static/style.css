@@ -517,9 +517,15 @@ td .type-badge {
     visibility: hidden;
     transition: all 0.15s ease;
     box-shadow: var(--shadow-offset-lg);
+    transform-origin: center center;
+    will-change: transform, opacity;
 }
 
-.modal.active { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1); }
+.modal.active { 
+    opacity: 1; 
+    visibility: visible; 
+    transform: translate(-50%, -50%) scale(1);
+}
 
 .modal h3 { margin-bottom: 1.25rem; color: var(--accent-lime); font-size: 1.125rem; font-weight: 900; text-transform: uppercase; letter-spacing: -0.01em; }
 
